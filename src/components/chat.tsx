@@ -75,7 +75,7 @@ export default function Chat(chatProps: ChatProps = {}) {
   const generating = (status === 'submitted' || status === 'streaming')
 
   return (
-    <div className="flex flex-col w-full max-w-md mx-auto h-screen bg-background">
+    <div className="flex flex-col w-full max-w-md mx-auto flex-1 h-[90vh] bg-background">
       <div className={clsx(messagesContainerClass)}>
         {messages.map(m => (
           <div key={m.id} className="mb-4">

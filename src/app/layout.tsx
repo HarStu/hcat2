@@ -37,7 +37,7 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="flex justify-end">
+        <div className="flex outline justify-end">
           {sessionCookie ? <Logout /> : <GoogleSignIn />}
         </div>
         {children}

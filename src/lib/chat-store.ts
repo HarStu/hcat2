@@ -21,12 +21,10 @@ function mapDbMsgToMessage(dbMessage: DbMessage): Message {
 }
 
 export async function createChat(game: Game): Promise<string> {
-  // TEMP PLACEHOLDER -- SHOULD BE REPLACED WITH DB IMPLEMENTATION
   const newId = generateId()
 
   await db.insert(chats).values({
     id: newId,
-    createdAt: new Date(),
     systemPrompt: game.systemPrompt,
     gameName: game.name,
     requiredTools: game.requiredTools

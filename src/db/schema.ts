@@ -48,7 +48,7 @@ export const verification = pgTable("verification", {
 
 export const chats = pgTable('chats', {
   id: text('id').primaryKey(),
-  createdAt: timestamp('createdAt').notNull(),
+  createdAt: timestamp('createdAt').defaultNow().notNull(),
   systemPrompt: text('systemPrompt'),
   gameName: text('gameName'),
   requiredTools: jsonb(),
@@ -59,7 +59,7 @@ export const chats = pgTable('chats', {
 
 export const messages = pgTable('messages', {
   id: text('id').primaryKey(),
-  createdAt: timestamp('createAt'),
+  createdAt: timestamp('createdAt').defaultNow(),
   content: text('content').notNull(),
   reasoning: text('reasoning'),
   experimental_attachments: jsonb(),
