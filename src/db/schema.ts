@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, boolean, integer } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, integer, jsonb } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text('id').primaryKey(),
@@ -46,4 +46,30 @@ export const verification = pgTable("verification", {
   updatedAt: timestamp('updated_at').$defaultFn(() => /* @__PURE__ */ new Date())
 });
 
-export const schema = { user, session, account, verification }
+export const chats = pgTable('chats', {
+  id: text('id').primaryKey(),
+  createdAt: timestamp('createdAt').defaultNow().notNull(),
+  systemPrompt: text('systemPrompt'),
+  gameName: text('gameName'),
+  requiredTools: jsonb(),
+  userName: text('userName'),
+  aiName: text('aiName'),
+  owner: text('owner').references(() => user.id)
+});
+
+export const messages = pgTable('messages', {
+  id: text('id').primaryKey(),
+  createdAt: timestamp('createdAt').defaultNow(),
+  content: text('content').notNull(),
+  reasoning: text('reasoning'),
+  experimental_attachments: jsonb(),
+  role: text('role').notNull(),
+  data: jsonb(),
+  annotations: jsonb(),
+  toolInvocations: jsonb(),
+  parts: jsonb(),
+  chatId: text('chatId').notNull().references(() => chats.id)
+})
+
+
+export const schema = { user, session, account, verification, chats, messages }
