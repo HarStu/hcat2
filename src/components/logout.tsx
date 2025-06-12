@@ -1,16 +1,23 @@
 "use client"
 
-import { authClient } from "@/utils/auth-client";
+import { useRouter } from 'next/navigation'
+import { authClient } from "@/lib/auth/auth-client";
 import { Button } from "@/components/ui/button"
 
-export default function Logout() {
+export function Logout() {
+  const router = useRouter()
+
   const handleLogout = async () => {
     await authClient.signOut()
-    console.log('signed out')
+    router.refresh()
   }
 
   return (
-    <Button variant="outline" onClick={handleLogout}>
+    <Button
+      variant="outline"
+      className="w-1/16 gap-4 m-4"
+      onClick={handleLogout}
+    >
       Logout
     </Button>
   )
