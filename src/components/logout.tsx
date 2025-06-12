@@ -1,6 +1,6 @@
 "use client"
 
-import { authClient } from "@/utils/auth-client";
+import { authClient } from "@/lib/auth/auth-client";
 import { Button } from "@/components/ui/button"
 
 export default function Logout() {

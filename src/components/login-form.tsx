@@ -29,7 +29,7 @@ import { z } from 'zod'
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { Loader2 } from "lucide-react"
-import { authClient } from "@/utils/auth-client"
+import { authClient } from "@/lib/auth/auth-client"
 
 const formSchema = z.object({
   email: z.string().email(),
