@@ -6,6 +6,10 @@ import { createIdGenerator } from 'ai'
 import { Loader2 } from "lucide-react"
 import clsx from 'clsx'
 
+import { useQuery } from '@tanstack/react-query'
+import { useTRPC } from '@/trpc/client'
+
+
 type ChatProps = {
   id?: string | undefined
   initialMessages?: Message[]
@@ -74,8 +78,12 @@ export default function Chat(chatProps: ChatProps = {}) {
 
   const generating = (status === 'submitted' || status === 'streaming')
 
+  const trpc = useTRPC()
+  const greeting = useQuery(trpc.hello.queryOptions({ text: 'world' }))
+
   return (
     <div className="flex flex-col w-full max-w-md mx-auto flex-1 h-[90vh] bg-background">
+      {greeting.data ? greeting.data.greeting : "Loading"}
       <div className={clsx(messagesContainerClass)}>
         {messages.map(m => (
           <div key={m.id} className="mb-4">

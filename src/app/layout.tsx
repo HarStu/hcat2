@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner"
 import { cookies } from 'next/headers'
 
+import { TRPCReactProvider } from "@/trpc/client";
+
 import { GoogleSignIn } from '@/components/google-signin'
 import { Logout } from '@/components/logout'
 
@@ -34,14 +36,14 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <div className="flex outline justify-end">
-          {sessionCookie ? <Logout /> : <GoogleSignIn />}
-        </div>
-        {children}
-        <Toaster />
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <TRPCReactProvider>
+          <div className="flex outline justify-end">
+            {sessionCookie ? <Logout /> : <GoogleSignIn />}
+          </div>
+          {children}
+          <Toaster />
+        </TRPCReactProvider>
       </body>
     </html>
   );
