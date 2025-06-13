@@ -23,17 +23,6 @@ function mapDbMsgToMessage(dbMessage: DbMessage): Message {
   }
 }
 
-export async function getIdFromToken(token: string): Promise<string> {
-  const tokenHash = createHash('sha256').update(token).digest('hex')
-  console.log(`Token hash for session attempting to create game: ${tokenHash}`)
-  const sessionRes = await db.select({ userId: session.userId }).from(session).where(eq(session.token, tokenHash)).limit(1)
-  if (sessionRes.length !== 1) {
-    throw new Error(`Could not fetch userId from token ${token}`)
-  } else {
-    return sessionRes[0].userId
-  }
-}
-
 export async function getGameNameDescriptionFromChatId(id: string): Promise<{ name: string, desc: string }> {
   const chat = await getChat(id)
   const game = await getGame(chat.gameName!)

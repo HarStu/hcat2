@@ -7,7 +7,6 @@ import {
   getChatMessages,
   appendMessages,
   getGameNameDescriptionFromChatId,
-  getIdFromToken
 } from '@/lib/db-access'
 import type { Message } from 'ai'
 import { z } from 'zod'
