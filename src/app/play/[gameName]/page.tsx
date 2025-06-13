@@ -8,9 +8,8 @@ import { gameConfigs } from '@/lib/games'
 
 export default async function Page(props: { params: Promise<{ gameName: string }> }) {
   const { gameName } = await props.params
-  const game = gameConfigs.find((config) => config.name === gameName)
 
-  if (game === undefined) {
+  if (gameName === undefined) {
     return (
       <div>
         Error, invalid game
@@ -18,7 +17,7 @@ export default async function Page(props: { params: Promise<{ gameName: string }
     )
   } else {
     // If the user is not logged in, there's no additional information to attach to the makeGame request
-    const id = await createChat(game)
+    const id = await createChat(gameName)
     redirect(`/chat/${id}`)
   }
 

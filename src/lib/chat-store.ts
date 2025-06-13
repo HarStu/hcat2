@@ -8,6 +8,7 @@ import type { Game } from '@/lib/games'
 import type { ToolName } from '@/lib/model-tools'
 
 type DbMessage = typeof messages.$inferSelect
+type Chat = typeof chats.$inferSelect
 
 function mapDbMsgToMessage(dbMessage: DbMessage): Message {
   return {
@@ -23,26 +24,40 @@ function mapDbMsgToMessage(dbMessage: DbMessage): Message {
 export async function getGame(gameName: string): Promise<Game> {
   const gameRes = await db.select().from(games).where(eq(games.name, gameName))
   if (!gameRes || gameRes.length !== 1) {
-    throw new Error(`Could not properly fetch game ${gameName}`)
+    throw new Error(`Could not fetch game ${gameName}`)
   } else {
     return gameRes[0] as Game
   }
 }
 
-export async function createChat(game: Game): Promise<string> {
+export async function createChat(gameName: string, owner?: string): Promise<string> {
   const newId = generateId()
+
+  const game = await getGame(gameName)
 
   await db.insert(chats).values({
     id: newId,
     systemPrompt: game.systemPrompt,
     gameName: game.name,
+    aiName: game.aiName,
+    owner: (owner ?? null),
     requiredTools: game.requiredTools
   })
 
   return newId
 }
 
-export async function loadChat(id: string): Promise<[Message[], string, ToolName[]]> {
+export async function getChat(id: string): Promise<Chat> {
+  const chatRes = await db.select().from(chats).where(eq(chats.id, id))
+
+  if (!chatRes || chatRes.length !== 1) {
+    throw new Error(`Could not fetch chat ${id}`)
+  } else {
+    return chatRes[0] as Chat
+  }
+}
+
+export async function loadMessages(id: string): Promise<[Message[], string, ToolName[]]> {
   const msgRes = await db.select().from(messages).where(eq(messages.chatId, id)).orderBy(asc(messages.createdAt))
   const retrievedMessages: Message[] = msgRes.map(msg => mapDbMsgToMessage(msg))
 
