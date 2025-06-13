@@ -51,7 +51,9 @@ export default async function RootLayout({
       )
     } else {
       return (
-        <div>More games when you log in!</div>
+        <div className="w-24 ml-4 text-wrap text-sm text-center border rounded">
+          More games available when you log in!
+        </div>
       )
     }
   }
