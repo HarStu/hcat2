@@ -55,14 +55,12 @@ export const dbRouter = createTRPCRouter({
   appendMessages: baseProcedure
     .input(
       z.object({
-        arg: z.object({
-          id: z.string(),
-          newMessages: z.array(z.custom<Message>())
-        })
+        id: z.string(),
+        newMessages: z.array(z.custom<Message>())
       })
     )
-    .query(async (opts) => {
-      const res = await appendMessages(opts.input.arg)
+    .mutation(async (opts) => {
+      const res = await appendMessages({ id: opts.input.id, newMessages: opts.input.newMessages })
       return { ok: true }
     })
 })
