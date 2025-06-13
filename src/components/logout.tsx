@@ -15,7 +15,7 @@ export function Logout() {
   return (
     <Button
       variant="outline"
-      className="w-1/16 gap-4 m-4"
+      className="w-24 gap-4 m-4"
       onClick={handleLogout}
     >
       Logout
