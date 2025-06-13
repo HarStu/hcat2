@@ -28,18 +28,18 @@ export const dbRouter = createTRPCRouter({
         owner: z.string().optional()
       })
     )
-    .query(async (opts) => {
+    .mutation(async (opts) => {
       const chatId = await createChat(opts.input.gameName, opts.input.owner)
       return chatId
     }),
   getChat: baseProcedure
     .input(
       z.object({
-        name: z.string()
+        id: z.string()
       })
     )
     .query(async (opts) => {
-      const chat = await getChat(opts.input.name)
+      const chat = await getChat(opts.input.id)
       return chat
     }),
   getChatMessages: baseProcedure
@@ -55,11 +55,14 @@ export const dbRouter = createTRPCRouter({
   appendMessages: baseProcedure
     .input(
       z.object({
-        id: z.string(),
-        newMessages: z.array(z.custom<Message>())
+        arg: z.object({
+          id: z.string(),
+          newMessages: z.array(z.custom<Message>())
+        })
       })
     )
     .query(async (opts) => {
-      appendMessages(opts.input.id, opts.input.newMessages)
+      const res = await appendMessages(opts.input.arg)
+      return { ok: true }
     })
 })
