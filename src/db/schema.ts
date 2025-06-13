@@ -71,5 +71,12 @@ export const messages = pgTable('messages', {
   chatId: text('chatId').notNull().references(() => chats.id)
 })
 
+export const games = pgTable('games', {
+  name: text('name').primaryKey().notNull(),
+  description: text('description').notNull(),
+  systemPrompt: text('systemPrompt').notNull(),
+  requiredTools: jsonb().notNull()
+})
+
 
 export const schema = { user, session, account, verification, chats, messages }

@@ -64,10 +64,13 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <TRPCReactProvider>
-          <div className="flex outline justify-end">
-            {sessionCookie ? <Logout /> : <GoogleSignIn />}
+          <div className="flex">
+            <div className="flex flex-col">
+              {sessionCookie ? <Logout /> : <GoogleSignIn />}
+              {generateSidebar()}
+            </div>
+            {children}
           </div>
-          {children}
           <Toaster />
         </TRPCReactProvider>
       </body>
