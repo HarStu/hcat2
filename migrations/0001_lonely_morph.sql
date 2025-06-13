@@ -1,0 +1,1 @@
+ALTER TABLE "chats" ADD CONSTRAINT "chats_gameName_games_name_fk" FOREIGN KEY ("gameName") REFERENCES "public"."games"("name") ON DELETE no action ON UPDATE no action;
