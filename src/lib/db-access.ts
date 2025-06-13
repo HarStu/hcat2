@@ -2,14 +2,16 @@ import { generateId } from 'ai'
 import type { Message } from 'ai'
 import { db } from '@/db/drizzle'
 import { eq, asc } from 'drizzle-orm'
-import { chats, messages, games } from '@/db/schema'
+import { createHash } from 'crypto'
 
+import { chats, messages, games, session } from '@/db/schema'
 import type { Game } from '@/lib/games'
 import type { ToolName } from '@/lib/model-tools'
 
 type DbMessage = typeof messages.$inferSelect
 type Chat = typeof chats.$inferSelect
 
+// helper function
 function mapDbMsgToMessage(dbMessage: DbMessage): Message {
   return {
     id: dbMessage.id,
@@ -18,6 +20,17 @@ function mapDbMsgToMessage(dbMessage: DbMessage): Message {
     content: dbMessage.content,
     createdAt: dbMessage.createdAt ? new Date(dbMessage.createdAt) : undefined,
     toolInvocations: dbMessage.toolInvocations as Message['toolInvocations'] ?? undefined
+  }
+}
+
+export async function getIdFromToken(token: string): Promise<string> {
+  const tokenHash = createHash('sha256').update(token).digest('hex')
+  console.log(`Token hash for session attempting to create game: ${tokenHash}`)
+  const sessionRes = await db.select({ userId: session.userId }).from(session).where(eq(session.token, tokenHash)).limit(1)
+  if (sessionRes.length !== 1) {
+    throw new Error(`Could not fetch userId from token ${token}`)
+  } else {
+    return sessionRes[0].userId
   }
 }
 

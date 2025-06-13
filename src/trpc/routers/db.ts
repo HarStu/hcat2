@@ -1,5 +1,14 @@
 import { createTRPCRouter, baseProcedure } from '@/trpc/init'
-import { getGame, getGameNames, createChat, getChat, getChatMessages, appendMessages, getGameNameDescriptionFromChatId } from '@/lib/chat-store'
+import {
+  getGame,
+  getGameNames,
+  createChat,
+  getChat,
+  getChatMessages,
+  appendMessages,
+  getGameNameDescriptionFromChatId,
+  getIdFromToken
+} from '@/lib/db-access'
 import type { Message } from 'ai'
 import { z } from 'zod'
 
