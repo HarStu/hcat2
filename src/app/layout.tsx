@@ -7,6 +7,8 @@ import Link from "next/link";
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 
+import { TRPCReactProvider } from "@/trpc/client";
+
 import { GoogleSignIn } from '@/components/google-signin'
 import { Logout } from '@/components/logout'
 
@@ -60,17 +62,14 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <div className="flex">
-          <div className="flex flex-col">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <TRPCReactProvider>
+          <div className="flex outline justify-end">
             {sessionCookie ? <Logout /> : <GoogleSignIn />}
-            {generateSidebar()}
           </div>
           {children}
-        </div>
-        <Toaster />
+          <Toaster />
+        </TRPCReactProvider>
       </body>
     </html>
   );
