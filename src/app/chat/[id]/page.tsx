@@ -1,4 +1,4 @@
-import { getChatMessages } from '@/lib/chat-store'
+import { getChatMessages } from '@/lib/db-access'
 import Chat from '@/components/chat'
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {

@@ -11,10 +11,10 @@ import { useTRPC } from '@/trpc/client'
 
 
 type ChatProps = {
-  id?: string | undefined
+  id: string
   initialMessages?: Message[]
 }
-export default function Chat(chatProps: ChatProps = {}) {
+export default function Chat(chatProps: ChatProps) {
   const { messages, input, handleInputChange, handleSubmit, status, stop, error, reload } = useChat({
     id: chatProps.id,
     initialMessages: chatProps.initialMessages,
@@ -78,13 +78,22 @@ export default function Chat(chatProps: ChatProps = {}) {
 
   const generating = (status === 'submitted' || status === 'streaming')
 
+  // setup our TRPC access
+  // get information about the chat and game we're in once upon loading
   const trpc = useTRPC()
-  const greeting = useQuery(trpc.hello.queryOptions({ text: 'world' }))
-  const ping = useQuery(trpc.db.ping.queryOptions())
+  const nameDesc = useQuery(trpc.db.getGameNameDescriptionFromChatId.queryOptions({ id: chatProps.id }))
+
+  const gameName = nameDesc.data?.name ?? ''
+  const gameDesc = nameDesc.data?.desc ?? ''
 
   return (
     <div className="flex flex-col w-full max-w-md mx-auto flex-1 h-screen bg-background">
-      {ping.data ? ping.data.ok : 'sorry'}
+      <div className="text-center font-bold">
+        {gameName}
+      </div>
+      <div className="text-center text-sm">
+        {gameDesc}
+      </div>
       <div className={clsx(messagesContainerClass)}>
         {messages.map(m => (
           <div key={m.id} className="mb-4">

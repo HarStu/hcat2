@@ -2,14 +2,16 @@ import { generateId } from 'ai'
 import type { Message } from 'ai'
 import { db } from '@/db/drizzle'
 import { eq, asc } from 'drizzle-orm'
-import { chats, messages, games } from '@/db/schema'
+import { createHash } from 'crypto'
 
+import { chats, messages, games, session } from '@/db/schema'
 import type { Game } from '@/lib/games'
 import type { ToolName } from '@/lib/model-tools'
 
 type DbMessage = typeof messages.$inferSelect
 type Chat = typeof chats.$inferSelect
 
+// helper function
 function mapDbMsgToMessage(dbMessage: DbMessage): Message {
   return {
     id: dbMessage.id,
@@ -19,6 +21,13 @@ function mapDbMsgToMessage(dbMessage: DbMessage): Message {
     createdAt: dbMessage.createdAt ? new Date(dbMessage.createdAt) : undefined,
     toolInvocations: dbMessage.toolInvocations as Message['toolInvocations'] ?? undefined
   }
+}
+
+export async function getGameNameDescriptionFromChatId(id: string): Promise<{ name: string, desc: string }> {
+  const chat = await getChat(id)
+  const game = await getGame(chat.gameName!)
+  console.log(`game name is: ${game.name}, description is: ${game.description}`)
+  return { name: game.name, desc: game.description }
 }
 
 export async function getGame(gameName: string): Promise<Game> {

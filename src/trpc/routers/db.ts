@@ -1,5 +1,13 @@
 import { createTRPCRouter, baseProcedure } from '@/trpc/init'
-import { getGame, getGameNames, createChat, getChat, getChatMessages, appendMessages } from '@/lib/chat-store'
+import {
+  getGame,
+  getGameNames,
+  createChat,
+  getChat,
+  getChatMessages,
+  appendMessages,
+  getGameNameDescriptionFromChatId,
+} from '@/lib/db-access'
 import type { Message } from 'ai'
 import { z } from 'zod'
 
@@ -62,5 +70,15 @@ export const dbRouter = createTRPCRouter({
     .mutation(async (opts) => {
       const res = await appendMessages({ id: opts.input.id, newMessages: opts.input.newMessages })
       return { ok: true }
+    }),
+  getGameNameDescriptionFromChatId: baseProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async (opts) => {
+      const nameDesc = await getGameNameDescriptionFromChatId(opts.input.id)
+      return nameDesc
     })
 })
