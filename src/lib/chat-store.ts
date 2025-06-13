@@ -21,6 +21,13 @@ function mapDbMsgToMessage(dbMessage: DbMessage): Message {
   }
 }
 
+export async function getGameNameDescriptionFromChatId(id: string): Promise<{ name: string, desc: string }> {
+  const chat = await getChat(id)
+  const game = await getGame(chat.gameName!)
+  console.log(`game name is: ${game.name}, description is: ${game.description}`)
+  return { name: game.name, desc: game.description }
+}
+
 export async function getGame(gameName: string): Promise<Game> {
   const gameRes = await db.select().from(games).where(eq(games.name, gameName))
   if (!gameRes || gameRes.length !== 1) {
