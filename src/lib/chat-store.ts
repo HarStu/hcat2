@@ -30,6 +30,15 @@ export async function getGame(gameName: string): Promise<Game> {
   }
 }
 
+export async function getGameNames(): Promise<string[]> {
+  const gamesRes = await db.select({ name: games.name }).from(games)
+  if (!gamesRes) {
+    throw new Error(`Could not fetch game names`)
+  } else {
+    return gamesRes.map((g) => g.name)
+  }
+}
+
 export async function createChat(gameName: string, owner?: string): Promise<string> {
   const newId = generateId()
 
