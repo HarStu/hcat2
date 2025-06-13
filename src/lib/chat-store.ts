@@ -66,7 +66,7 @@ export async function getChat(id: string): Promise<Chat> {
   }
 }
 
-export async function loadMessages(id: string): Promise<[Message[], string, ToolName[]]> {
+export async function getChatMessages(id: string): Promise<[Message[], string, ToolName[]]> {
   const msgRes = await db.select().from(messages).where(eq(messages.chatId, id)).orderBy(asc(messages.createdAt))
   const retrievedMessages: Message[] = msgRes.map(msg => mapDbMsgToMessage(msg))
 
@@ -80,7 +80,7 @@ export async function loadMessages(id: string): Promise<[Message[], string, Tool
   }
 }
 
-export async function saveChat({ id, newMessages }: { id: string, newMessages: Message[] }): Promise<void> {
+export async function appendMessages({ id, newMessages }: { id: string, newMessages: Message[] }): Promise<void> {
 
   for (const msg of newMessages) {
     const cloneMsg = structuredClone(msg) as Message & { chatId: string }

@@ -3,7 +3,7 @@ import { google } from '@ai-sdk/google';
 import { appendResponseMessages, streamText, createIdGenerator } from 'ai';
 import type { Message } from 'ai';
 import { appendClientMessage } from 'ai';
-import { saveChat, loadMessages } from '@/lib/chat-store'
+import { appendMessages, getChatMessages } from '@/lib/chat-store'
 import { z } from 'zod';
 
 import { model_tools } from '@/lib/model-tools'
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     const { message, id } = reqJson as { message: Message, id: string }
 
     // grab previous messages and the prompt for the game
-    const [previousMessages, gamePrompt, requiredTools] = await loadMessages(id);
+    const [previousMessages, gamePrompt, requiredTools] = await getChatMessages(id);
 
     // append the new message to the previous messages 
     const messages = appendClientMessage({
@@ -60,7 +60,7 @@ export async function POST(req: Request) {
       },
       async onFinish({ response }) {
         console.log(response)
-        await saveChat({
+        await appendMessages({
           id,
           newMessages: appendResponseMessages({
             messages,
