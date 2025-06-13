@@ -5,12 +5,12 @@ import { cookies } from 'next/headers'
 import Link from "next/link";
 
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 
 import { TRPCReactProvider } from "@/trpc/client";
 
 import { GoogleSignIn } from '@/components/google-signin'
 import { Logout } from '@/components/logout'
+import { GameList } from '@/components/gameList'
 
 import { gameConfigs } from '@/lib/games'
 
@@ -43,13 +43,7 @@ export default async function RootLayout({
   const generateSidebar = () => {
     if (sessionCookie) {
       return (
-        gameConfigs.map((game) => {
-          return (
-            <Button key={game.name} variant="link" className="w-24 gap-1 m-1 ml-4 border rounded hover:bg-accent" asChild>
-              <Link href={`/play/${game.name}`}>{game.name}</Link>
-            </Button >
-          )
-        })
+        <GameList />
       )
     } else {
       return (

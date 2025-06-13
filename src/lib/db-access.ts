@@ -30,6 +30,11 @@ export async function getGameNameDescriptionFromChatId(id: string): Promise<{ na
   return { name: game.name, desc: game.description }
 }
 
+export async function getUserChats(owner: string): Promise<Chat[]> {
+  const chatsRes = await db.select().from(chats).where(eq(chats.owner, owner))
+  return chatsRes
+}
+
 export async function getGame(gameName: string): Promise<Game> {
   const gameRes = await db.select().from(games).where(eq(games.name, gameName))
   if (!gameRes || gameRes.length !== 1) {
