@@ -50,7 +50,7 @@ export const chats = pgTable('chats', {
   id: text('id').primaryKey(),
   createdAt: timestamp('createdAt').defaultNow().notNull(),
   systemPrompt: text('systemPrompt'),
-  gameName: text('gameName'),
+  gameName: text('gameName').references(() => games.name),
   requiredTools: jsonb(),
   userName: text('userName'),
   aiName: text('aiName'),
@@ -69,6 +69,15 @@ export const messages = pgTable('messages', {
   toolInvocations: jsonb(),
   parts: jsonb(),
   chatId: text('chatId').notNull().references(() => chats.id)
+})
+
+export const games = pgTable('games', {
+  name: text('name').primaryKey().notNull(),
+  description: text('description').notNull(),
+  systemPrompt: text('systemPrompt').notNull(),
+  aiName: text('aiName').notNull(),
+  requiredTools: jsonb().notNull(),
+  score: integer().default(0)
 })
 
 
