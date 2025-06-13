@@ -43,7 +43,7 @@ export default async function RootLayout({
       return (
         gameConfigs.map((game) => {
           return (
-            <Button key={game.name} variant="link" className="w-24 gap-4 m-4" asChild>
+            <Button key={game.name} variant="link" className="w-24 gap-1 m-1 ml-4 border rounded hover:bg-accent" asChild>
               <Link href={`/play/${game.name}`}>{game.name}</Link>
             </Button >
           )
@@ -51,7 +51,7 @@ export default async function RootLayout({
       )
     } else {
       return (
-        <div>hello</div>
+        <div>More games when you log in!</div>
       )
     }
   }
