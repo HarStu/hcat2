@@ -2,7 +2,7 @@ import { generateId } from 'ai'
 import type { Message } from 'ai'
 import { db } from '@/db/drizzle'
 import { eq, asc } from 'drizzle-orm'
-import { chats, messages } from '@/db/schema'
+import { chats, messages, games } from '@/db/schema'
 
 import type { Game } from '@/lib/games'
 import type { ToolName } from '@/lib/model-tools'
@@ -17,6 +17,15 @@ function mapDbMsgToMessage(dbMessage: DbMessage): Message {
     content: dbMessage.content,
     createdAt: dbMessage.createdAt ? new Date(dbMessage.createdAt) : undefined,
     toolInvocations: dbMessage.toolInvocations as Message['toolInvocations'] ?? undefined
+  }
+}
+
+export async function getGame(gameName: string): Promise<Game> {
+  const gameRes = await db.select().from(games).where(eq(games.name, gameName))
+  if (!gameRes || gameRes.length !== 1) {
+    throw new Error(`Could not properly fetch game ${gameName}`)
+  } else {
+    return gameRes[0] as Game
   }
 }
 

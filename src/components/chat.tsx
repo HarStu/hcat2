@@ -80,9 +80,11 @@ export default function Chat(chatProps: ChatProps = {}) {
 
   const trpc = useTRPC()
   const greeting = useQuery(trpc.hello.queryOptions({ text: 'world' }))
+  const ping = useQuery(trpc.db.ping.queryOptions())
 
   return (
     <div className="flex flex-col w-full max-w-md mx-auto flex-1 h-screen bg-background">
+      {ping.data ? ping.data.ok : 'sorry'}
       <div className={clsx(messagesContainerClass)}>
         {messages.map(m => (
           <div key={m.id} className="mb-4">
