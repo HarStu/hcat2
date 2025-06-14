@@ -19,7 +19,7 @@ export function GameList() {
     )
   } else {
     return (
-      <div className="flex flex-col w-32 h-9/20 ml-4 border rounded overflow-y-auto items-center">
+      <div className="flex flex-col w-32 max-h-2/5 ml-4 mb-4 border rounded overflow-y-auto items-center">
         {gameNames.map((game) => {
           return (
             <Button key={game} variant="link" className="w-24 gap-1 m-1 border rounded hover:bg-accent" asChild>

@@ -2,17 +2,14 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner"
 import { cookies } from 'next/headers'
-import Link from "next/link";
-
-import { Button } from '@/components/ui/button'
 
 import { TRPCReactProvider } from "@/trpc/client";
 
 import { GoogleSignIn } from '@/components/google-signin'
 import { Logout } from '@/components/logout'
-import { GameList } from '@/components/gameList'
 
-import { gameConfigs } from '@/lib/games'
+import { GameList } from '@/components/gameList'
+import { ChatList } from '@/components/chatList'
 
 import "./globals.css";
 
@@ -43,7 +40,17 @@ export default async function RootLayout({
   const generateSidebar = () => {
     if (sessionCookie) {
       return (
-        <GameList />
+        <div className="max-h-screen">
+          {sessionCookie ? <Logout /> : <GoogleSignIn />}
+          <div className="ml-10">
+            new games!
+          </div>
+          <GameList />
+          <div className="ml-8">
+            past games!
+          </div>
+          <ChatList />
+        </div>
       )
     } else {
       return (
@@ -60,7 +67,6 @@ export default async function RootLayout({
         <TRPCReactProvider>
           <div className="flex">
             <div className="flex flex-col">
-              {sessionCookie ? <Logout /> : <GoogleSignIn />}
               {generateSidebar()}
             </div>
             {children}

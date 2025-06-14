@@ -81,5 +81,15 @@ export const dbRouter = createTRPCRouter({
     .query(async (opts) => {
       const nameDesc = await getGameNameDescriptionFromChatId(opts.input.id)
       return nameDesc
+    }),
+  getUserChats: baseProcedure
+    .input(
+      z.object({
+        owner: z.string()
+      })
+    )
+    .query(async (opts) => {
+      const chats = await getUserChats(opts.input.owner)
+      return chats
     })
 })
