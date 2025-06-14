@@ -69,7 +69,7 @@ export const dbRouter = createTRPCRouter({
       })
     )
     .mutation(async (opts) => {
-      const res = await appendMessages({ id: opts.input.id, newMessages: opts.input.newMessages })
+      await appendMessages({ id: opts.input.id, newMessages: opts.input.newMessages })
       return { ok: true }
     }),
   getGameNameDescriptionFromChatId: baseProcedure
