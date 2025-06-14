@@ -22,7 +22,7 @@ export async function ChatList() {
       }).map((chat) => {
         return (
           <Button key={chat.id} variant="link" className="w-24 gap-1 m-1 border rounded hover:bg-accent" asChild>
-            <Link href={`/chat/${chat.id}`}>{chat.gameName + chat.id.slice(0, 2)}</Link>
+            <Link href={`/chat/${chat.id}`}>{`${chat.gameName} ${chat.id.slice(0, 1)}`}</Link>
           </Button >
         )
       })}

@@ -34,28 +34,32 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookieStore = await cookies()
-  const sessionCookie = cookieStore.get('better-auth.session_token')
-  console.log(`${sessionCookie}`)
+  const sessionCookie =
+    cookieStore.get('__Secure-better-auth.session_token')?.value ??
+    cookieStore.get('better-auth.session_token')?.value
 
   const generateSidebar = () => {
     if (sessionCookie) {
       return (
         <div className="max-h-screen">
-          {sessionCookie ? <Logout /> : <GoogleSignIn />}
+          <Logout />
           <div className="ml-10">
             new games!
           </div>
           <GameList />
-          <div className="ml-8">
-            past games!
+          <div className="ml-7">
+            past progress!
           </div>
           <ChatList />
         </div>
       )
     } else {
       return (
-        <div className="w-24 ml-4 text-wrap text-sm text-center border rounded">
-          More games available when you log in!
+        <div>
+          <GoogleSignIn />
+          <div className="w-24 ml-8 p-2 text-wrap text-sm text-center border rounded">
+            Login to save your progress and play additional games!
+          </div>
         </div>
       )
     }

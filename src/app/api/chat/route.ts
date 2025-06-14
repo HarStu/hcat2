@@ -4,7 +4,6 @@ import { appendResponseMessages, streamText, createIdGenerator } from 'ai';
 import type { Message } from 'ai';
 import { appendClientMessage } from 'ai';
 import { appendMessages, getChatMessages } from '@/lib/db-access'
-import { z } from 'zod';
 
 import { model_tools } from '@/lib/model-tools'
 import type { ToolName } from '@/lib/model-tools'
