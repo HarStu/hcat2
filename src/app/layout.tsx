@@ -34,8 +34,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookieStore = await cookies()
-  const sessionCookie = cookieStore.get('better-auth.session_token')
-  console.log(`${sessionCookie}`)
+  const sessionCookie =
+    cookieStore.get('__Secure-better-auth.session_token')?.value ??
+    cookieStore.get('better-auth.session_token')?.value
 
   const generateSidebar = () => {
     if (sessionCookie) {
