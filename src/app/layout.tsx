@@ -46,8 +46,8 @@ export default async function RootLayout({
             new games!
           </div>
           <GameList />
-          <div className="ml-8">
-            past games!
+          <div className="ml-7">
+            past progress!
           </div>
           <ChatList />
         </div>
