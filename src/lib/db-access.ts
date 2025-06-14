@@ -2,9 +2,8 @@ import { generateId } from 'ai'
 import type { Message } from 'ai'
 import { db } from '@/db/drizzle'
 import { eq, asc } from 'drizzle-orm'
-import { createHash } from 'crypto'
 
-import { chats, messages, games, session } from '@/db/schema'
+import { chats, messages, games } from '@/db/schema'
 import type { Game } from '@/lib/games'
 import type { ToolName } from '@/lib/model-tools'
 
