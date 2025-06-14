@@ -41,7 +41,7 @@ export default async function RootLayout({
     if (sessionCookie) {
       return (
         <div className="max-h-screen">
-          {sessionCookie ? <Logout /> : <GoogleSignIn />}
+          <Logout />
           <div className="ml-10">
             new games!
           </div>
@@ -54,8 +54,11 @@ export default async function RootLayout({
       )
     } else {
       return (
-        <div className="w-24 ml-4 text-wrap text-sm text-center border rounded">
-          More games available when you log in!
+        <div>
+          <GoogleSignIn />
+          <div className="w-24 ml-8 p-2 text-wrap text-sm text-center border rounded">
+            Login to save your progress and play additional games!
+          </div>
         </div>
       )
     }
